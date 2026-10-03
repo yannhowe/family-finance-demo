@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Family Finance — synthetic public demo</title>
+  <meta name="description" content="A privacy-safe demonstration of deterministic financial document ingestion, reconciliation and audit trails.">
+  <meta name="theme-color" content="#13261f">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2313261f'/%3E%3Cpath d='M17 19h30v7H17zm0 12h18v7H17zm0 12h25v7H17z' fill='%23d5f26b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+  <style>.panel.wide{grid-row:auto}.audit-callout{grid-column:1/-1}</style>
+</head>
+<body>
+  <div class="privacy-ribbon"><strong>Synthetic demo</strong><span>No real names, accounts, statements or transactions.</span></div>
+  <header class="masthead">
+    <div><p class="eyebrow">Family Finance</p><h1>Every number has a trail.</h1></div>
+    <div class="run-status"><span class="pulse"></span><span><b>Demo run reconciled</b><small>24 synthetic documents · 0 warnings</small></span></div>
+  </header>
+  <main>
+    <nav class="tabs" aria-label="Dashboard views">
+      <button class="active" data-view="overview">Overview</button>
+      <button data-view="documents">Document audit</button>
+      <button data-view="reconciliation">Reconciliation</button>
+    </nav>
+
+    <section id="overview" class="view active">
+      <div class="metrics">
+        <article><span>Net household spend</span><strong>S$84,260</strong><small>Last 12 synthetic months</small></article>
+        <article><span>Tagged reimbursements</span><strong>S$7,420</strong><small>Matched to 31 source rows</small></article>
+        <article><span>Uncategorized</span><strong>S$186</strong><small>0.2% of included spend</small></article>
+      </div>
+      <div class="dashboard-grid">
+        <article class="panel wide">
+          <div class="panel-head"><div><p class="eyebrow">Monthly movement</p><h2>Net spend</h2></div><span>Apr 2025–Mar 2026</span></div>
+          <div class="chart" aria-label="Synthetic monthly net spending bar chart" id="monthly-chart"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Composition</p><h2>Where it went</h2></div></div>
+          <div id="category-list" class="category-list"></div>
+        </article>
+        <article class="panel audit-callout">
+          <p class="eyebrow">Trace one number</p>
+          <h2>From dashboard to source</h2>
+          <p>Select a category to see its rule, included rows and source-document references.</p>
+          <button id="trace-demo">Trace groceries</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="documents" class="view">
+      <article class="panel">
+        <div class="panel-head"><div><p class="eyebrow">Immutable intake register</p><h2>Document audit</h2></div><span>All filenames and institutions are invented</span></div>
+        <div class="coverage-legend"><span><i class="included"></i>Included</span><span><i class="duplicate"></i>Duplicate</span><span><i class="review"></i>Reviewed</span></div>
+        <div class="table-wrap"><table><thead><tr><th>Document</th><th>Parser</th><th>Rows</th><th>Fingerprint</th><th>Status</th></tr></thead><tbody id="document-rows"></tbody></table></div>
+      </article>
+    </section>
+
+    <section id="reconciliation" class="view">
+      <div class="recon-grid">
+        <article class="panel">
+          <p class="eyebrow">Deterministic checks</p><h2>Reconciliation gates</h2>
+          <div id="checks" class="checks"></div>
+        </article>
+        <article class="panel">
+          <p class="eyebrow">Budget to actual</p><h2>Evidence coverage</h2>
+          <div id="budget-rows" class="budget-rows"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <button class="drawer-close" aria-label="Close details">×</button>
+    <p class="eyebrow">Audit trail</p><h2 id="drawer-title"></h2>
+    <div id="drawer-content"></div>
+  </aside>
+  <div id="backdrop" class="backdrop" hidden></div>
+  <footer><span>Family Finance · public demonstration</span><a href="https://github.com/yannhowe/family-finance-demo">View source</a></footer>
+  <script src="./app.js"></script>
+</body>
+</html>
