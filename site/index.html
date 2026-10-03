@@ -1,81 +1,119 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Family Finance — synthetic public demo</title>
-  <meta name="description" content="A privacy-safe demonstration of deterministic financial document ingestion, reconciliation and audit trails.">
-  <meta name="theme-color" content="#13261f">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2313261f'/%3E%3Cpath d='M17 19h30v7H17zm0 12h18v7H17zm0 12h25v7H17z' fill='%23d5f26b'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./styles.css">
-  <style>.panel.wide{grid-row:auto}.audit-callout{grid-column:1/-1}</style>
-</head>
-<body>
-  <div class="privacy-ribbon"><strong>Synthetic demo</strong><span>No real names, accounts, statements or transactions.</span></div>
-  <header class="masthead">
-    <div><p class="eyebrow">Family Finance</p><h1>Every number has a trail.</h1></div>
-    <div class="run-status"><span class="pulse"></span><span><b>Demo run reconciled</b><small>24 synthetic documents · 0 warnings</small></span></div>
-  </header>
-  <main>
-    <nav class="tabs" aria-label="Dashboard views">
-      <button class="active" data-view="overview">Overview</button>
-      <button data-view="documents">Document audit</button>
-      <button data-view="reconciliation">Reconciliation</button>
-    </nav>
-
-    <section id="overview" class="view active">
-      <div class="metrics">
-        <article><span>Net household spend</span><strong>S$84,260</strong><small>Last 12 synthetic months</small></article>
-        <article><span>Tagged reimbursements</span><strong>S$7,420</strong><small>Matched to 31 source rows</small></article>
-        <article><span>Uncategorized</span><strong>S$186</strong><small>0.2% of included spend</small></article>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A privacy-safe, synthetic demo of an auditable family finance dashboard." />
+    <title>Family Finance — public demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="demo-banner"><strong>PUBLIC DEMO</strong><span>Every name, amount and document is synthetic. Nothing is uploaded.</span></div>
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">FAMILY OFFICE · DEMO DATA</p>
+        <h1>Money, made legible.</h1>
+        <p class="lede">A private-style view of household spending, source documents and reconciliation—with safe sample data.</p>
       </div>
-      <div class="dashboard-grid">
-        <article class="panel wide">
-          <div class="panel-head"><div><p class="eyebrow">Monthly movement</p><h2>Net spend</h2></div><span>Apr 2025–Mar 2026</span></div>
-          <div class="chart" aria-label="Synthetic monthly net spending bar chart" id="monthly-chart"></div>
-        </article>
-        <article class="panel">
-          <div class="panel-head"><div><p class="eyebrow">Composition</p><h2>Where it went</h2></div></div>
-          <div id="category-list" class="category-list"></div>
-        </article>
-        <article class="panel audit-callout">
-          <p class="eyebrow">Trace one number</p>
-          <h2>From dashboard to source</h2>
-          <p>Select a category to see its rule, included rows and source-document references.</p>
-          <button id="trace-demo">Trace groceries</button>
-        </article>
+      <div class="period-card">
+        <span>Reporting period</span>
+        <strong>Apr 2025–Mar 2026</strong>
+        <small>1,108 synthetic rows · S$84,260 net spend</small>
       </div>
-    </section>
+    </header>
 
-    <section id="documents" class="view">
-      <article class="panel">
-        <div class="panel-head"><div><p class="eyebrow">Immutable intake register</p><h2>Document audit</h2></div><span>All filenames and institutions are invented</span></div>
-        <div class="coverage-legend"><span><i class="included"></i>Included</span><span><i class="duplicate"></i>Duplicate</span><span><i class="review"></i>Reviewed</span></div>
-        <div class="table-wrap"><table><thead><tr><th>Document</th><th>Parser</th><th>Rows</th><th>Fingerprint</th><th>Status</th></tr></thead><tbody id="document-rows"></tbody></table></div>
-      </article>
-    </section>
+    <main>
+      <section class="toolbar" aria-label="Dashboard controls">
+        <div class="date-range">
+          <button class="chip active" data-range="12m">12 months</button>
+          <button class="chip" data-range="90d">90 days</button>
+          <button class="chip" data-range="30d">30 days</button>
+        </div>
+        <button class="secondary" id="resetDemo">Reset demo</button>
+      </section>
 
-    <section id="reconciliation" class="view">
-      <div class="recon-grid">
-        <article class="panel">
-          <p class="eyebrow">Deterministic checks</p><h2>Reconciliation gates</h2>
-          <div id="checks" class="checks"></div>
-        </article>
-        <article class="panel">
-          <p class="eyebrow">Budget to actual</p><h2>Evidence coverage</h2>
-          <div id="budget-rows" class="budget-rows"></div>
-        </article>
-      </div>
-    </section>
-  </main>
+      <nav class="tabs" aria-label="Dashboard sections">
+        <button class="tab active" data-view="categories">Categories</button>
+        <button class="tab" data-view="transactions">Transactions <span class="count">24</span></button>
+        <button class="tab" data-view="accounts">Account activity</button>
+        <button class="tab" data-view="reconciliation">Reconciliation</button>
+        <button class="tab" data-view="fees">Annual fees</button>
+      </nav>
 
-  <aside id="drawer" class="drawer" aria-hidden="true">
-    <button class="drawer-close" aria-label="Close details">×</button>
-    <p class="eyebrow">Audit trail</p><h2 id="drawer-title"></h2>
-    <div id="drawer-content"></div>
-  </aside>
-  <div id="backdrop" class="backdrop" hidden></div>
-  <footer><span>Family Finance · public demonstration</span><a href="https://github.com/yannhowe/family-finance-demo">View source</a></footer>
-  <script src="./app.js"></script>
-</body>
+      <section class="view active" id="categoriesView">
+        <div class="metrics">
+          <article><span>Net spend</span><strong>S$84,260</strong><small>after refunds and reversals</small></article>
+          <article><span>Monthly average</span><strong>S$7,022</strong><small>across all household accounts</small></article>
+          <article><span>Needs review</span><strong>18</strong><small>1.6% of transaction rows</small></article>
+        </div>
+        <div class="section-heading">
+          <div><p class="eyebrow">WHERE IT WENT</p><h2>Spending by category</h2></div>
+          <p>Click any category to see its transactions and source evidence.</p>
+        </div>
+        <div id="categoryList" class="category-list"></div>
+      </section>
+
+      <section class="view" id="transactionsView">
+        <div class="section-heading">
+          <div><p class="eyebrow">AUDITABLE LEDGER</p><h2>Transactions</h2></div>
+          <p id="transactionSummary">Showing 24 representative synthetic rows.</p>
+        </div>
+        <div class="filters">
+          <label>Search<input id="searchInput" type="search" placeholder="Merchant or description" /></label>
+          <label>Category<select id="categoryFilter"><option value="">All categories</option></select></label>
+          <label>Account<select id="accountFilter"><option value="">All accounts</option></select></label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Merchant</th><th>Category</th><th>Account</th><th class="amount">Amount</th></tr></thead>
+            <tbody id="transactionRows"></tbody>
+          </table>
+          <p class="empty" id="emptyTransactions" hidden>No transactions match these filters.</p>
+        </div>
+      </section>
+
+      <section class="view" id="accountsView">
+        <div class="section-heading">
+          <div><p class="eyebrow">DOCUMENT COVERAGE</p><h2>Account activity</h2></div>
+          <p>Statement coverage and extracted row counts by month.</p>
+        </div>
+        <div id="coverageGrid" class="coverage-grid"></div>
+        <div class="section-heading compact"><div><p class="eyebrow">SOURCE REGISTER</p><h2>Imported documents</h2></div></div>
+        <div id="documentList" class="document-list"></div>
+      </section>
+
+      <section class="view" id="reconciliationView">
+        <div class="section-heading">
+          <div><p class="eyebrow">QUALITY GATES</p><h2>Reconciliation</h2></div>
+          <p>Deterministic checks run before a reporting period is accepted.</p>
+        </div>
+        <div id="gateList" class="gate-list"></div>
+        <div class="split-panel">
+          <article class="panel"><p class="eyebrow">BUDGET COVERAGE</p><h3>10 of 12 months reconciled</h3><div class="progress"><span style="width:83%"></span></div><p>Two recent months are provisionally complete while statement cycles close.</p></article>
+          <article class="panel"><p class="eyebrow">MONTHLY WATERFALL</p><div id="waterfall" class="waterfall"></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="feesView">
+        <div class="section-heading">
+          <div><p class="eyebrow">CARD HYGIENE</p><h2>Annual fees</h2></div>
+          <p>Potential card fees are surfaced for review, not silently classified.</p>
+        </div>
+        <div id="feeList" class="fee-list"></div>
+      </section>
+    </main>
+
+    <aside class="drawer" id="transactionDrawer" aria-hidden="true" aria-label="Transaction evidence">
+      <button class="drawer-close" id="drawerClose" aria-label="Close evidence drawer">×</button>
+      <p class="eyebrow">SOURCE EVIDENCE</p>
+      <h2 id="drawerMerchant"></h2>
+      <p class="drawer-description" id="drawerDescription"></p>
+      <dl id="drawerDetails"></dl>
+      <div class="evidence-note"><strong>Why this category?</strong><p id="drawerRule"></p></div>
+      <p class="privacy-note">Demo note: the source filename, fingerprint and row location are invented for this public example.</p>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <script src="app.js"></script>
+  </body>
 </html>
